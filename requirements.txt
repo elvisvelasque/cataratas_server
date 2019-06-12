@@ -1,8 +1,5 @@
 Django==2.0.5
-Pillow==
-4.1.1
+Pillow==4.1.1
 gunicorn==19.8.1
-tensorflow
-==1.8.0
-WhiteNoise
-==3.3.1
+tensorflow==1.8.0
+WhiteNoise==3.3.1
