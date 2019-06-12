@@ -9,6 +9,47 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+import requests
+
+def download_file_from_google_drive(id, destination):
+    URL = "https://docs.google.com/uc?export=download"
+
+    session = requests.Session()
+
+    response = session.get(URL, params = { 'id' : id }, stream = True)
+    token = get_confirm_token(response)
+
+    if token:
+        params = { 'id' : id, 'confirm' : token }
+        response = session.get(URL, params = params, stream = True)
+
+    save_response_content(response, destination)    
+
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+
+    return None
+
+def save_response_content(response, destination):
+    CHUNK_SIZE = 32768
+
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(CHUNK_SIZE):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+
+file_id = '1vyGHpWY0TUgDijTWej-Wgvtd95MzJJVk'
+destination = "{base_path}/inception_model/labels.txt".format(
+    base_path=os.path.abspath(os.path.dirname(__file__)))
+download_file_from_google_drive(file_id, destination)
+
+file_id = '1tuFRP43NT4W4WJkiQo7ffTvzr0kXrVwZ'
+destination = "{base_path}/inception_model/graph.pb".format(
+    base_path=os.path.abspath(os.path.dirname(__file__)))
+download_file_from_google_drive(file_id, destination)
+
 MAX_K = 10
 
 TF_GRAPH = "{base_path}/inception_model/graph.pb".format(
@@ -19,7 +60,7 @@ TF_LABELS = "{base_path}/inception_model/labels.txt".format(
 
 def load_graph():
     sess = tf.Session()
-    with tf.gfile.GFile(TF_GRAPH, 'rb') as tf_graph:
+    with tf.gfile.FastGFile(TF_GRAPH, 'rb') as tf_graph:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(tf_graph.read())
         tf.import_graph_def(graph_def, name='')
@@ -68,7 +109,7 @@ def classify(request):
 def tf_classify(image_file, k=MAX_K):
     result = list()
 
-    image_data = tf.gfile.GFile(image_file.name, 'rb').read()
+    image_data = tf.gfile.FastGFile(image_file.name, 'rb').read()
 
     predictions = SESS.run(GRAPH_TENSOR, {'DecodeJpeg/contents:0': image_data})
     predictions = predictions[0][:len(LABELS)]
