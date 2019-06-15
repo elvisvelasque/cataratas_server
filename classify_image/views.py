@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
 import requests
+import os.path
 
 def download_file_from_google_drive(id, destination):
     URL = "https://docs.google.com/uc?export=download"
@@ -43,12 +44,20 @@ def save_response_content(response, destination):
 file_id = '1vyGHpWY0TUgDijTWej-Wgvtd95MzJJVk'
 destination = "{base_path}/inception_model/labels.txt".format(
     base_path=os.path.abspath(os.path.dirname(__file__)))
-download_file_from_google_drive(file_id, destination)
+
+if os.path.exists(destination):
+    a=1
+else:
+    download_file_from_google_drive(file_id, destination)
 
 file_id = '1tuFRP43NT4W4WJkiQo7ffTvzr0kXrVwZ'
 destination = "{base_path}/inception_model/graph.pb".format(
     base_path=os.path.abspath(os.path.dirname(__file__)))
-download_file_from_google_drive(file_id, destination)
+
+if os.path.exists(destination):
+    a=1
+else:
+    download_file_from_google_drive(file_id, destination)
 
 MAX_K = 10
 
