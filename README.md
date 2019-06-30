@@ -15,10 +15,10 @@ $ python3 manage.py runserver
 ```
 
 ## Web Interface
-The Web Interface can be found at [http://tf-classify.herokuapp.com](http://tf-classify.herokuapp.com)
+The Web Interface can be found at [http://cataratasserver.herokuapp.com](http://cataratasserver.herokuapp.com)
 
 ## Web API
-You can classify using web API by sending a POST request at [http://tf-classify.herokuapp.com/classify_image/classify/api/](http://tf-classify.herokuapp.com/classify_image/classify/api/)<br>
+You can classify using web API by sending a POST request at [http://cataratasserver.herokuapp.com/classify_image/classify/api/](http://tf-classify.herokuapp.com/classify_image/classify/api/)<br>
 
 #### Input
 Parameter | Type                           | Description
@@ -44,6 +44,3 @@ Example:  {"success": true, "confidence": {  "mongoose": 0.87896, "hare": 0.0012
 * [Fork](https://github.com/CCD-1997/image-classify-server#fork-destination-box) this repo
 * Replace the generated graph and label files in `/classify_image/inception_model/`
 * Deploy the Django project
-
-## Contribute
-I am just beginner. If you find any bugs or want to improve the project, fell free to do it uisng pull request.
