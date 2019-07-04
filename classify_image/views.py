@@ -40,12 +40,12 @@ def save_response_content(response, destination):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
 
-file_id = '1vyGHpWY0TUgDijTWej-Wgvtd95MzJJVk'
+file_id = '1Pd_sRlLRFXw7GswsA-gvZJ4MonAECsrH'
 destination = "{base_path}/inception_model/labels.txt".format(
     base_path=os.path.abspath(os.path.dirname(__file__)))
 download_file_from_google_drive(file_id, destination)
 
-file_id = '1tuFRP43NT4W4WJkiQo7ffTvzr0kXrVwZ'
+file_id = '1KupNlK-PTZvMkQs1yAKfL4w8SsiGjMbi'
 destination = "{base_path}/inception_model/graph.pb".format(
     base_path=os.path.abspath(os.path.dirname(__file__)))
 download_file_from_google_drive(file_id, destination)
